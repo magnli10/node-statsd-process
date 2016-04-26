@@ -7,10 +7,13 @@ test("gathers proc metrics",function(t){
   var metrics = {}
 
   var stop = numproc({
-    metric:function(attrs){
-      metrics[attrs.name] = attrs.value
-    }
-  },500)
+    metrics: {
+        gauge: function(name, value){
+            metrics[name] = value
+        }
+    },
+    interval: 500,
+  })
 
   setTimeout(function(){
 
