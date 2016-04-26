@@ -1,7 +1,6 @@
 
 var blocked = require('blocked')
 var cpuPercent = require('cpu-percent')
-var Emitter = require('numbat-emitter')
 var procfs = require('procfs-stats')
 
 var DEFAULT_TIMEOUT = 10000
@@ -9,15 +8,14 @@ var DEFAULT_TIMEOUT = 10000
 var lagIdInc = 0
 var eventLoopLag = {}
 
-module.exports = function(options,interval){
+module.exports = function(options){
 
-  var emitter
   options = options||{}
 
-  if(typeof options.metric === 'function'){
-    emitter = options
-  } else {
-    emitter = new Emitter(options)
+  var metrics = options.metrics;
+
+  if (!metrics) {
+      throw new Error("options.metrics should exist")
   }
 
   var procStats = procfs(process.pid)
@@ -39,28 +37,28 @@ module.exports = function(options,interval){
  
   var stop = _interval(function(cb){
 
-    metric(emitter,'cpu.percent',percent)
+    metric(metrics,'cpu.percent',percent)
 
     // memory
     var mem = process.memoryUsage();
     Object.keys(mem).forEach(function(k){
-      metric(emitter,'memory.'+k,mem[k])
+      metric(metrics,'memory.'+k,mem[k])
     });
 
     // event loop lag
     var lag = computeLag(lagId)  
 
-    metric(emitter,'js.eventloop',lag)
-    metric(emitter,'js.handles',process._getActiveHandles().length)
-    metric(emitter,'js.requests',process._getActiveRequests().length)
+    metric(metrics,'js.eventloop',lag)
+    metric(metrics,'js.handles',process._getActiveHandles().length)
+    metric(metrics,'js.requests',process._getActiveRequests().length)
 
     // fds
     procStats.fds(function(err,fds){
-      if(fds) metric(emitter,'fds.count',fds.length||0)
+      if(fds) metric(metrics,'fds.count',fds.length||0)
       cb();
     })
 
-  },interval||DEFAULT_TIMEOUT)
+},options.interval||DEFAULT_TIMEOUT)
 
   return function(){
     stop()
@@ -116,9 +114,6 @@ function _interval(fn,duration){
 }
 
 
-function metric(em,name,value){
-  em.metric({
-    name: name,
-    value: value === undefined?1:value 
-  })
+function metric(metrics,name,value){
+  metrics.gauge(name, value === undefined?1:value)
 }
