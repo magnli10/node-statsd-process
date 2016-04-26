@@ -10,7 +10,7 @@ var metrics = new lynx('localhost', 8125, {
     scope: 'myapplication',
 });
 
-numproc({
+statsdproc({
     metrics: metrics,
     timeout: 10000, // default is 10000
 })
