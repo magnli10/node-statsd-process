@@ -12,7 +12,7 @@ var metrics = new lynx('localhost', 8125, {
 
 statsdproc({
     metrics: metrics,
-    timeout: 10000, // default is 10000
+    interval: 10000, // default is 10000
 })
 
 ```
