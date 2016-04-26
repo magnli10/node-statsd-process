@@ -1,27 +1,23 @@
 {
-  "name": "numbat-process",
-  "version": "2.0.5",
-  "description": "Monitor your process with numbat",
+  "name": "node-statsd-process",
+  "version": "0.0.1",
+  "description": "Monitor your process with statsd",
   "main": "index.js",
   "scripts": {
     "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/npm/numbat-process.git"
+    "url": "git+https://github.com/amedia/node-statsd-process.git"
   },
   "keywords": [
-    "numbat",
+    "statsd",
     "process",
-    "emitter",
     "monitor"
   ],
-  "author": "Ryan Day <soldair@gmail.com>",
+  "author": "Amedia",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/npm/numbat-process/issues"
-  },
-  "homepage": "https://github.com/npm/numbat-process#readme",
+  "homepage": "https://github.com/amedia/node-statsd-process",
   "devDependencies": {
     "tape": "^4.2.0"
   },

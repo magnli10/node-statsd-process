@@ -25,6 +25,7 @@ module.exports = function(options){
   var percent = 0
 
   var cpuStop = cpuPercent.pid(process.pid,function(err,_percent){
+      debugger;
     if(err) percent = 0
     percent = _percent<1?1:_percent
   },options.cpuInterval||1000)
